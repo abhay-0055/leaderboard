@@ -15,6 +15,7 @@ function tagChanges(prev, next) {
 export function useLeaderboard() {
   const [rows, setRows] = useState([]);
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const prevRef = useRef([]);
   const timerRef = useRef(null);
 
@@ -24,6 +25,7 @@ export function useLeaderboard() {
       const tagged = tagChanges(prevRef.current, next);
       prevRef.current = next;
       setRows(tagged);
+      setLastUpdated(Date.now());
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -57,5 +59,5 @@ export function useLeaderboard() {
     };
   }, [poll]);
 
-  return { rows, error };
+  return { rows, error, lastUpdated };
 }

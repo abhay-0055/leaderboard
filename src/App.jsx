@@ -1,8 +1,5 @@
-import { useLeaderboard } from "./hooks/useLeaderboard";
+import Dashboard from "./components/Dashboard";
 
 export default function App() {
-  const { rows, error } = useLeaderboard();
-  console.log(rows);
-  if (error) return <div>Error: {error}</div>;
-  return <div>Leaderboard Dashboard — {rows.length} rows loaded (check console)</div>;
+  return <Dashboard />;
 }
