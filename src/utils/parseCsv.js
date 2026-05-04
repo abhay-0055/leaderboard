@@ -18,7 +18,9 @@ export async function fetchAndParse(url) {
     dynamicTyping: true,
   });
 
-  if (errors.length) throw new Error(`CSV parse error: ${errors[0].message}`);
+  const fatal = errors.filter((e) => e.type !== "FieldMismatch");
+  if (fatal.length) throw new Error(`CSV parse error: ${fatal[0].message}`);
+  if (!data.length) throw new Error("CSV parse error: no rows returned");
 
   const mapped = data.map((raw) => {
     const row = {};
