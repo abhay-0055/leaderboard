@@ -4,7 +4,7 @@ A real-time leaderboard that polls a publicly shared OneDrive Excel file (via CS
 
 ## Current state
 
-Data layer is implemented. Fetching, parsing, polling, and change-tagging all work. No UI yet — the app renders a row count and logs the parsed rows to the browser console.
+Fully functional end-to-end. Dark stadium-style UI is live with all components, animations, and the polling data layer wired together. Point a browser at the dev server and the leaderboard renders immediately.
 
 ## Prerequisites
 
@@ -15,7 +15,8 @@ Data layer is implemented. Fetching, parsing, polling, and change-tagging all wo
 
 ```bash
 cp .env.example .env
-# edit .env — set CSV_URL to your OneDrive CSV download URL
+# edit .env — set VITE_CSV_URL to your OneDrive CSV download URL
+# see docs/data-layer.md for how to generate the URL
 npm install
 ```
 
@@ -25,25 +26,40 @@ npm install
 npm run dev   # → http://localhost:5173
 ```
 
-Open DevTools → Console. On each poll (default: every 30 s) you will see the parsed row array logged. Each row has the shape:
+The dashboard auto-polls every 30 s (configurable via `VITE_REFRESH_INTERVAL_MS`). Each row has the shape:
 
 ```js
 { name, score, extra, rank, changed }
 ```
 
-`changed: true` is set on rows whose score differs from the previous poll.
+`changed: true` is set on rows whose score differs from the previous poll — those rows flash yellow.
 
-## Testing the data layer
+## Features
 
-1. Set `VITE_CSV_URL` in `.env` to a real OneDrive download URL (see `docs/data-layer.md` for how to generate one).
-2. `npm run dev` → open `http://localhost:5173`.
-3. Check the browser console — the row array is logged on every successful fetch.
-4. Optionally lower `VITE_REFRESH_INTERVAL_MS` to `5000` in `.env` to see polling fire quickly.
-5. Switch to another tab and back — polling pauses while hidden and resumes on focus.
+- **Dark theme** — deep navy/purple radial gradient, stadium-scoreboard aesthetic
+- **Rank badges** — gold / silver / bronze for top 3, with glow
+- **Flash animation** — yellow fade-out on any score change
+- **Pulsing live dot** — green pulse + "Updated Xs ago" counter
+- **Shimmer skeleton** — 10 placeholder rows while awaiting first data
+- **Visibility-aware polling** — pauses when tab is hidden, resumes on focus
 
 ## Build
 
 ```bash
-npm run build
-npm run preview
+npm run build    # → dist/
+npm run preview  # preview production build locally
 ```
+
+## Deploy
+
+### Vercel (recommended)
+
+1. Connect the repo to Vercel.
+2. In **Project Settings → Environment Variables** set:
+   - `CSV_URL` — your OneDrive CSV download URL (no `VITE_` prefix; never exposed to the client)
+   - `VITE_REFRESH_INTERVAL_MS` — poll interval in ms (default `30000`)
+3. Vercel auto-detects Vite. Build command: `npm run build`. Output: `dist/`. The `api/csv.js` file is served as a serverless function.
+
+### Netlify
+
+See `docs/deployment.md` for the Netlify Functions adapter snippet and redirect config.

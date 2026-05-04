@@ -1,16 +1,16 @@
 import Papa from "papaparse";
 
 const COLUMN_MAP = {
-  "Team Name": "name",
+  Team: "name",
   Referral: "score",
-  "Column 3": "extra",
+  Points: "extra",
 };
 
 export async function fetchAndParse(url) {
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`CSV fetch failed: ${res.status}`);
   const text = await res.text();
-  if (text.trimStart().startsWith("<!")) throw new Error("Got HTML instead of CSV — check sharing permissions or CSV_URL");
+  if (text.trimStart().startsWith("<!DOCTYPE")) throw new Error("Got HTML instead of CSV — check sharing permissions or CSV_URL");
 
   const { data, errors } = Papa.parse(text, {
     header: true,

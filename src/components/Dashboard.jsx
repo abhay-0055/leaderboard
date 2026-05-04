@@ -11,7 +11,7 @@ export default function Dashboard() {
       <div className="spotlight spotlight-right" />
       <div className="container">
         <header className="dashboard-header">
-          <h1 className="dashboard-title">League Table</h1>
+          <h1 className="dashboard-title">Mandi Challenge</h1>
           <LiveIndicator lastUpdated={lastUpdated} error={error} />
         </header>
         <LeaderboardTable rows={rows} error={error} />

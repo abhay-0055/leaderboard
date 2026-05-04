@@ -35,11 +35,9 @@ VITE_REFRESH_INTERVAL_MS=30000
 
 | Excel Header | Internal Key |
 |---|---|
-| `Team Name` | `name` |
+| `Team` | `name` |
 | `Referral` | `score` |
-| `Column 3` | `extra` |
-
-> Update this mapping once final column names are confirmed.
+| `Points` | `extra` |
 
 ## Data Flow
 

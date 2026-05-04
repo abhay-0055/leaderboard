@@ -24,7 +24,7 @@ export default function LeaderboardTable({ rows, error }) {
             <th className="th-rank">Rank</th>
             <th className="th-name">Team</th>
             <th className="th-score">Referrals</th>
-            <th className="th-extra">Extra</th>
+            <th className="th-extra">Points</th>
           </tr>
         </thead>
         <tbody>
