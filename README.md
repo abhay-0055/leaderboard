@@ -1,6 +1,6 @@
 # Leaderboard Dashboard
 
-A real-time leaderboard that polls a publicly shared OneDrive Excel file (via CSV URL) and auto-refreshes the UI.
+A real-time leaderboard that polls a publicly shared Google Sheet (via CSV export URL) and auto-refreshes the UI.
 
 ## Current state
 
@@ -9,14 +9,15 @@ Fully functional end-to-end. Dark stadium-style UI is live with all components, 
 ## Prerequisites
 
 - Node.js 18+
-- A `.env` file based on `.env.example` with a real `VITE_CSV_URL`
+- A `.env` file based on `.env.example` with a real `CSV_URL`
 
 ## Setup
 
 ```bash
 cp .env.example .env
-# edit .env — set VITE_CSV_URL to your OneDrive CSV download URL
-# see docs/data-layer.md for how to generate the URL
+# edit .env — set CSV_URL to your Google Sheets CSV export URL
+# format: https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>
+# the sheet must be shared publicly ("Anyone with the link can view")
 npm install
 ```
 
