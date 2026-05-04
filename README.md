@@ -57,7 +57,7 @@ npm run preview  # preview production build locally
 
 1. Connect the repo to Vercel.
 2. In **Project Settings → Environment Variables** set:
-   - `CSV_URL` — your OneDrive CSV download URL (no `VITE_` prefix; never exposed to the client)
+   - `CSV_URL` — your Google Sheets CSV export URL (no `VITE_` prefix; never exposed to the client)
    - `VITE_REFRESH_INTERVAL_MS` — poll interval in ms (default `30000`)
 3. Vercel auto-detects Vite. Build command: `npm run build`. Output: `dist/`. The `api/csv.js` file is served as a serverless function.
 
