@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { fetchAndParse } from "../utils/parseCsv";
 
-const CSV_URL = import.meta.env.VITE_CSV_URL;
+const CSV_URL = "/api/csv";
 const INTERVAL_MS = Number(import.meta.env.VITE_REFRESH_INTERVAL_MS) || 30000;
 
 function tagChanges(prev, next) {

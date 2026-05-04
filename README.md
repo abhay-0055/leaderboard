@@ -15,7 +15,7 @@ Data layer is implemented. Fetching, parsing, polling, and change-tagging all wo
 
 ```bash
 cp .env.example .env
-# edit .env — set VITE_CSV_URL to your OneDrive CSV download URL
+# edit .env — set CSV_URL to your OneDrive CSV download URL
 npm install
 ```
 
