@@ -1,20 +1,40 @@
-import { useLeaderboard } from "../hooks/useLeaderboard";
+import { useReferrals } from "../hooks/useReferrals";
+import { usePoints } from "../hooks/usePoints";
+import Header from "./Header";
 import LeaderboardTable from "./LeaderboardTable";
-import LiveIndicator from "./LiveIndicator";
 
 export default function Dashboard() {
-  const { rows, error, lastUpdated } = useLeaderboard();
+  const { rows: referralRows, error: referralError, lastUpdated: referralUpdated } = useReferrals();
+  const { rows: pointRows, error: pointError, lastUpdated: pointUpdated } = usePoints();
+
+  const lastUpdated = Math.max(referralUpdated || 0, pointUpdated || 0) || null;
 
   return (
     <div className="dashboard">
       <div className="spotlight spotlight-left" />
       <div className="spotlight spotlight-right" />
       <div className="container">
-        <header className="dashboard-header">
-          <h1 className="dashboard-title">Mandi Challenge</h1>
-          <LiveIndicator lastUpdated={lastUpdated} error={error} />
-        </header>
-        <LeaderboardTable rows={rows} error={error} />
+        <Header
+          lastUpdated={lastUpdated}
+          referralsError={referralError}
+          pointsError={pointError}
+        />
+        <div className="tables-row">
+          <LeaderboardTable
+            title="REFERRALS LEADERBOARD"
+            columnLabel="REFERRALS"
+            rows={referralRows}
+            theme="silver"
+            error={referralError}
+          />
+          <LeaderboardTable
+            title="POINTS LEADERBOARD"
+            columnLabel="POINTS"
+            rows={pointRows}
+            theme="gold"
+            error={pointError}
+          />
+        </div>
       </div>
     </div>
   );

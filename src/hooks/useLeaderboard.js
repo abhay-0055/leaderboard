@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { fetchAndParse } from "../utils/parseCsv";
 
-const CSV_URL = "/api/csv";
 const INTERVAL_MS = Number(import.meta.env.VITE_REFRESH_INTERVAL_MS) || 30000;
 
 function tagChanges(prev, next) {
-  const prevByName = Object.fromEntries(prev.map((r) => [r.name, r.score]));
+  const prevByName = Object.fromEntries(prev.map((r) => [r.name, r.value]));
   return next.map((row) => ({
     ...row,
-    changed: prevByName[row.name] !== undefined && prevByName[row.name] !== row.score,
+    changed: prevByName[row.name] !== undefined && prevByName[row.name] !== row.value,
   }));
 }
 
-export function useLeaderboard() {
+export function useLeaderboard(csvUrl, nameCol, valueCol) {
   const [rows, setRows] = useState([]);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -20,8 +19,9 @@ export function useLeaderboard() {
   const timerRef = useRef(null);
 
   const poll = useCallback(async () => {
+    if (!csvUrl) return;
     try {
-      const next = await fetchAndParse(CSV_URL);
+      const next = await fetchAndParse(csvUrl, nameCol, valueCol);
       const tagged = tagChanges(prevRef.current, next);
       prevRef.current = next;
       setRows(tagged);
@@ -30,7 +30,7 @@ export function useLeaderboard() {
     } catch (err) {
       setError(err.message);
     }
-  }, []);
+  }, [csvUrl, nameCol, valueCol]);
 
   useEffect(() => {
     poll();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function LiveIndicator({ lastUpdated, error }) {
+export default function LiveIndicator({ lastUpdated, referralsError, pointsError }) {
   const [secondsAgo, setSecondsAgo] = useState(0);
 
   useEffect(() => {
@@ -13,15 +13,17 @@ export default function LiveIndicator({ lastUpdated, error }) {
 
   return (
     <div className="live-indicator">
-      {error ? (
-        <div className="error-banner">⚠ {error}</div>
-      ) : (
-        <div className="live-status">
-          <span className="live-dot" />
-          <span className="live-label">LIVE</span>
-          {lastUpdated && (
-            <span className="updated-text">· Updated {secondsAgo}s ago</span>
-          )}
+      <div className="live-status">
+        <span className="live-dot" />
+        <span className="live-label">LIVE</span>
+        {lastUpdated && (
+          <span className="updated-text">· Updated {secondsAgo}s ago</span>
+        )}
+      </div>
+      {(referralsError || pointsError) && (
+        <div className="error-banner">
+          {referralsError && <div>⚠ Referrals: {referralsError}</div>}
+          {pointsError && <div>⚠ Points: {pointsError}</div>}
         </div>
       )}
     </div>

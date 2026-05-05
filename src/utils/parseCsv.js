@@ -1,16 +1,11 @@
 import Papa from "papaparse";
 
-const COLUMN_MAP = {
-  Team: "name",
-  Referral: "score",
-  Points: "extra",
-};
-
-export async function fetchAndParse(url) {
+export async function fetchAndParse(url, nameCol, valueCol) {
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`CSV fetch failed: ${res.status}`);
   const text = await res.text();
-  if (text.trimStart().startsWith("<!DOCTYPE")) throw new Error("Got HTML instead of CSV — check sharing permissions or CSV_URL");
+  if (text.trimStart().startsWith("<!DOCTYPE"))
+    throw new Error("Got HTML instead of CSV — check sharing settings");
 
   const { data, errors } = Papa.parse(text, {
     header: true,
@@ -22,19 +17,12 @@ export async function fetchAndParse(url) {
   if (fatal.length) throw new Error(`CSV parse error: ${fatal[0].message}`);
   if (!data.length) throw new Error("CSV parse error: no rows returned");
 
-  const mapped = data.map((raw) => {
-    const row = {};
-    for (const [excelKey, internalKey] of Object.entries(COLUMN_MAP)) {
-      row[internalKey] = raw[excelKey] ?? null;
-    }
-    return row;
-  });
+  const mapped = data
+    .map((raw) => ({ name: raw[nameCol] ?? null, value: raw[valueCol] ?? null }))
+    .filter((r) => r.name != null);
 
-  mapped.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-
-  mapped.forEach((row, i) => {
-    row.rank = i + 1;
-  });
+  mapped.sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
+  mapped.forEach((row, i) => { row.rank = i + 1; });
 
   return mapped;
 }
