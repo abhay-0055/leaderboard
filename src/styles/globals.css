@@ -41,6 +41,11 @@ body {
   100% { background-color: transparent; }
 }
 
+@keyframes flash-update-silver {
+  0%   { background-color: rgba(255, 180, 0, 0.35); }
+  100% { background-color: #f5f0e8; }
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1;   transform: scale(1);   }
   50%       { opacity: 0.5; transform: scale(1.5); }
@@ -58,7 +63,8 @@ body {
 
 /* ── Utilities ─────────────────────────────────────────────── */
 
-.row-changed { animation: flash-update 1.5s ease-out forwards; }
+.row-changed                    { animation: flash-update        1.5s ease-out forwards; }
+.team-row--silver.row-changed   { animation: flash-update-silver  1.5s ease-out forwards; }
 .live-dot    { animation: pulse 1.5s ease-in-out infinite; }
 
 /* ── Dashboard shell ───────────────────────────────────────── */

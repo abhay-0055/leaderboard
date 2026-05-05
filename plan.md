@@ -37,3 +37,30 @@
 - [x] Confirm `dist/` is in `.gitignore`
 - [x] Update `README.md` with final run + deployment instructions
 - [x] Git commit: `"phase 4: production build, error handling, deployment docs"`
+
+## Phase 5 — Redesign: Dual Leaderboard ✓
+- [x] Replace single OneDrive CSV source with two independent Google Sheet CSV URLs
+- [x] Refactor `parseCsv.js` to accept `nameCol`/`valueCol` params; internal key `value` (was `score`)
+- [x] Refactor `useLeaderboard.js` to accept `csvUrl`, `nameCol`, `valueCol`
+- [x] Add `useReferrals.js` — thin wrapper calling `/api/referrals`
+- [x] Add `usePoints.js` — thin wrapper calling `/api/points`
+- [x] Add `Header.jsx` — event title + shared `LiveIndicator`
+- [x] Rewrite `LiveIndicator.jsx` — shows separate error warnings per feed
+- [x] Rewrite `LeaderboardTable.jsx` — accepts `title`, `columnLabel`, `theme` (`"silver"` | `"gold"`)
+- [x] Rewrite `TeamRow.jsx` — theme-aware badge and row colours
+- [x] Rewrite `Dashboard.jsx` — side-by-side `tables-row` grid, calls both hooks independently
+- [x] Rewrite `globals.css` — silver + gold dual themes, responsive stack below 900 px
+- [x] Update `.env.example` and confirm real column headers (`Team`, `Referrals`, `Points`)
+- [x] Update `README.md` for dual-sheet setup
+- [x] `npm run build` clean
+- [x] Git commit: `"redesign: dual leaderboard, google sheets, silver/gold themes"`
+
+## Phase 6 — Restore Server-Side Proxy ✓
+- [x] Add `api/referrals.js` — Vercel function proxying `REFERRALS_CSV_URL`
+- [x] Add `api/points.js` — Vercel function proxying `POINTS_CSV_URL`
+- [x] Restore Vite dev proxy in `vite.config.js` for `/api/referrals` and `/api/points`
+- [x] Remove `import.meta.env` URL references from `useReferrals.js` and `usePoints.js`; use local `/api/...` paths
+- [x] Rename env vars to `REFERRALS_CSV_URL` / `POINTS_CSV_URL` (drop `VITE_` prefix — server-side only)
+- [x] Switch URL format to `export?format=csv&gid=0` (works with "Anyone with the link" sharing; no "Publish to web" required)
+- [x] Update `.env` and `.env.example`
+- [x] `npm run build` clean
