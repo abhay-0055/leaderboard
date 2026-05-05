@@ -1,6 +1,6 @@
 # Live Leaderboard Dashboard
 
-A real-time leaderboard dashboard that polls a publicly shared OneDrive Excel file (via CSV URL) and auto-refreshes the UI. No backend, no auth, no cost.
+A real-time dual leaderboard dashboard — **Referrals** (left) and **Points** (right) — each polling its own publicly published Google Sheet CSV. Side-by-side layout, gaming/esports aesthetic. No backend, no auth, no cost.
 
 ## Stack
 
@@ -17,9 +17,10 @@ A real-time leaderboard dashboard that polls a publicly shared OneDrive Excel fi
 ## Key Conventions
 
 - All environment variables prefixed with `VITE_`
-- Column names in `parseCsv.js` must exactly match Excel headers (case-sensitive)
+- Column names in `parseCsv.js` must exactly match Google Sheet headers (case-sensitive)
 - Always fetch CSV with `cache: "no-store"` to prevent stale responses
 - Pause polling when tab is hidden via `visibilitychange` event
+- Each leaderboard loads and errors independently — one failure must not affect the other
 
 ## Project Structure (target)
 
@@ -28,9 +29,12 @@ leaderboard-dashboard/
 ├── public/
 ├── src/
 │   ├── hooks/
-│   │   └── useLeaderboard.js
+│   │   ├── useLeaderboard.js      # generic hook (accepts csvUrl)
+│   │   ├── useReferrals.js        # calls useLeaderboard with VITE_REFERRALS_CSV_URL
+│   │   └── usePoints.js           # calls useLeaderboard with VITE_POINTS_CSV_URL
 │   ├── components/
 │   │   ├── Dashboard.jsx
+│   │   ├── Header.jsx
 │   │   ├── LeaderboardTable.jsx
 │   │   ├── TeamRow.jsx
 │   │   └── LiveIndicator.jsx
@@ -46,6 +50,8 @@ leaderboard-dashboard/
 │   └── deployment.md
 ├── .env
 ├── .env.example
+├── plan.md
+├── progress.md
 ├── CLAUDE.md
 └── README.md
 ```
@@ -61,8 +67,8 @@ npm run preview   # preview production build
 
 ## Full Specs
 
-- **OneDrive CSV setup, polling hook, parser, env vars:** `@docs/data-layer.md`
-- **UI components, animations, dark theme, aesthetic direction:** `@docs/ui-spec.md`
+- **Google Sheets CSV setup, polling hooks, parser, env vars:** `@docs/data-layer.md`
+- **UI components, dual-table layout, themes, animations:** `@docs/ui-spec.md`
 - **Hosting, deployment checklist, known gotchas:** `@docs/deployment.md`
 
-**Visual reference:** `@leaderboard1.jpg` — target dashboard style (Pro Kabaddi League table)
+**Visual reference:** `@docs/new-leaderboard.png` — target dashboard design (dual leaderboard, silver + gold themes)

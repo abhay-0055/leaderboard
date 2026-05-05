@@ -1,52 +1,69 @@
 # Data Layer
 
-## OneDrive CSV Setup
+## Source: Google Sheets (Public CSV)
 
-1. Open your Excel file in OneDrive / Excel Online
-2. **Share → Anyone with the link can view → Copy link**
-3. Convert the share link to a direct CSV download URL:
+Each leaderboard pulls from its own **publicly published Google Sheet** via a CSV URL. No API key or auth required.
+
+### How to publish a Google Sheet as CSV
+
+1. Open the Google Sheet
+2. **File → Share → Publish to web**
+3. Select the correct sheet tab, choose **CSV** format, click **Publish**
+4. Copy the URL — it looks like:
    ```
-   https://onedrive.live.com/download?resid=<RESID>&authkey=<AUTHKEY>&format=csv
+   https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}
    ```
-   Find `resid` and `authkey` in the share/embed dialog, or from the download URL in Excel Online (File → Save As → Download a Copy).
-4. Test it: paste the URL in a browser — it should immediately download a `.csv`
+5. Test it: paste in a browser — should immediately download a `.csv`
+
+> Do this twice — once for the Referrals sheet, once for the Points sheet.
 
 ## Environment Variables
 
 ```env
 # .env.example
-VITE_CSV_URL=https://onedrive.live.com/download?resid=YOUR_RESID&authkey=YOUR_AUTHKEY&format=csv
+VITE_REFERRALS_CSV_URL=https://docs.google.com/spreadsheets/d/.../gviz/tq?tqx=out:csv&sheet=...
+VITE_POINTS_CSV_URL=https://docs.google.com/spreadsheets/d/.../gviz/tq?tqx=out:csv&sheet=...
 VITE_REFRESH_INTERVAL_MS=30000
 ```
 
-## Polling Hook — `useLeaderboard.js`
+## Column Mapping
 
-- Calls `fetchAndParse(CSV_URL)` immediately on mount, then on every interval
-- Compares new rows against previous rows and tags changed scores (`row.changed = true`) for flash animation
-- Stops polling when `document.hidden` is true; resumes on tab focus
-- Sets `error` state if fetch or parse fails; clears it on next successful load
+| Sheet | Excel Header | Internal Key |
+|---|---|---|
+| Referrals | `Team` | `name` |
+| Referrals | `Referrals` | `value` |
+| Points | `Team` | `name` |
+| Points | `Points` | `value` |
+
+## Hooks
+
+Two separate hooks, identical in structure, differing only in their CSV URL and env var:
+
+- `useReferrals()` — polls `VITE_REFERRALS_CSV_URL`
+- `usePoints()` — polls `VITE_POINTS_CSV_URL`
+
+Both hooks:
+- Call `fetchAndParse(url)` immediately on mount, then on each interval
+- Diff new rows against previous rows; tag changed rows (`row.changed = true`)
+- Pause polling when `document.hidden` is true; resume on tab focus
+- Expose `{ rows, lastUpdated, error }`
+
+Consider extracting shared logic into a generic `useLeaderboard(csvUrl)` hook that both call with their respective URL.
 
 ## CSV Parser — `parseCsv.js`
 
-- Uses Papa Parse with `{ header: true, skipEmptyLines: true, dynamicTyping: true }`
-- Sorts rows descending by score column before returning
+- Uses Papa Parse: `{ header: true, skipEmptyLines: true, dynamicTyping: true }`
+- Sorts rows descending by `value`
 - Assigns `rank` (1-based) after sorting
-- Maps raw Excel column names to internal keys:
+- Returns array of `{ rank, name, value, changed }`
 
-| Excel Header | Internal Key |
-|---|---|
-| `Team` | `name` |
-| `Referral` | `score` |
-| `Points` | `extra` |
-
-## Data Flow
+## Data Flow (per table)
 
 ```
 fetch(CSV_URL, { cache: "no-store" })
   → raw CSV text
-  → Papa Parse → array of row objects
-  → sort by score desc
-  → assign rank
+  → Papa Parse → row objects
+  → sort by value desc → assign rank
   → diff against prev → tag changed rows
-  → setRows() → React re-render
+  → setRows() → re-render table
 ```
