@@ -263,8 +263,8 @@ body {
   text-align: left;
 }
 
-.th-rank  { width: 70px; text-align: center; }
-.th-value { text-align: right; }
+.th-rank  { width: 60px; text-align: center; }
+.th-value { text-align: right; width: 90px; }
 
 /* ── Body rows — Silver ────────────────────────────────────── */
 
@@ -301,7 +301,7 @@ body {
 
 .rank-cell {
   text-align: center;
-  width: 70px;
+  width: 60px;
 }
 
 .name-cell {
@@ -321,6 +321,16 @@ body {
 
 .value-cell--silver { color: #333344; }
 .value-cell--gold   { color: var(--color-gold); }
+
+.secondary-cell {
+  text-align: right;
+  font-size: 1.05rem;
+  font-weight: 600;
+  width: 90px;
+}
+
+.secondary-cell--silver { color: #888899; }
+.secondary-cell--gold   { color: var(--text-muted); }
 
 /* ── Rank badges ───────────────────────────────────────────── */
 

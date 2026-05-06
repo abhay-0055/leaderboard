@@ -1,7 +1,7 @@
 const MEDAL = ["gold", "silver", "bronze"];
 
-export default function TeamRow({ row, theme }) {
-  const { rank, name, value, changed } = row;
+export default function TeamRow({ row, theme, columns }) {
+  const { rank, name, changed } = row;
   const medalClass = rank <= 3 ? `rank-badge--${MEDAL[rank - 1]}` : "rank-badge--plain";
 
   return (
@@ -12,7 +12,17 @@ export default function TeamRow({ row, theme }) {
         </span>
       </td>
       <td className="name-cell">{name ?? "—"}</td>
-      <td className={`value-cell value-cell--${theme}`}>{value ?? "—"}</td>
+      {columns.map((col) =>
+        col.field === "value" ? (
+          <td key={col.field} className={`value-cell value-cell--${theme}`}>
+            {row.value ?? "—"}
+          </td>
+        ) : (
+          <td key={col.field} className={`secondary-cell secondary-cell--${theme}`}>
+            {row.secondary ?? "—"}
+          </td>
+        )
+      )}
     </tr>
   );
 }

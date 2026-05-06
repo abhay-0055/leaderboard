@@ -64,3 +64,16 @@
 - [x] Switch URL format to `export?format=csv&gid=0` (works with "Anyone with the link" sharing; no "Publish to web" required)
 - [x] Update `.env` and `.env.example`
 - [x] `npm run build` clean
+
+## Phase 7 — 4-Column Tables (Referrals + Enrolls) ✓
+- [x] Add `secondaryCol` param to `parseCsv.js`; include `secondary` field on each row
+- [x] Add `secondaryCol` param to `useLeaderboard.js`; thread through to `fetchAndParse` and `useCallback` deps
+- [x] Update `useReferrals.js` — pass `"Points"` as `secondaryCol` (sort key stays `Referrals`)
+- [x] Update `usePoints.js` — pass `"Enrolls"` as `secondaryCol` (sort key stays `Points`)
+- [x] Replace `columnLabel` prop with `columns: [{label, field}]` array in `LeaderboardTable`
+- [x] Update `SkeletonRow` to render 4 `<td>` elements; `colSpan` computed from `columns.length + 2`
+- [x] Update `TeamRow` to iterate `columns`; `field="value"` → themed primary cell; `field="secondary"` → muted `.secondary-cell`
+- [x] Update `Dashboard` — Referrals: `[REFERRALS (value), POINTS (secondary)]`; Points: `[ENROLLS (secondary), POINTS (value)]`
+- [x] Add `.secondary-cell` and `.secondary-cell--{theme}` to `globals.css`; adjust column widths
+- [x] Update `README.md` column mapping table and row shape docs
+- [x] `npm run build` clean

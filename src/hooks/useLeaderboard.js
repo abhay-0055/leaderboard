@@ -11,7 +11,7 @@ function tagChanges(prev, next) {
   }));
 }
 
-export function useLeaderboard(csvUrl, nameCol, valueCol) {
+export function useLeaderboard(csvUrl, nameCol, valueCol, secondaryCol = null) {
   const [rows, setRows] = useState([]);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -21,7 +21,7 @@ export function useLeaderboard(csvUrl, nameCol, valueCol) {
   const poll = useCallback(async () => {
     if (!csvUrl) return;
     try {
-      const next = await fetchAndParse(csvUrl, nameCol, valueCol);
+      const next = await fetchAndParse(csvUrl, nameCol, valueCol, secondaryCol);
       const tagged = tagChanges(prevRef.current, next);
       prevRef.current = next;
       setRows(tagged);
@@ -30,7 +30,7 @@ export function useLeaderboard(csvUrl, nameCol, valueCol) {
     } catch (err) {
       setError(err.message);
     }
-  }, [csvUrl, nameCol, valueCol]);
+  }, [csvUrl, nameCol, valueCol, secondaryCol]);
 
   useEffect(() => {
     poll();

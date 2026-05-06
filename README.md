@@ -29,10 +29,10 @@ npm run dev   # → http://localhost:5173
 Each table auto-polls every 30 s (configurable via `VITE_REFRESH_INTERVAL_MS`). Rows have the shape:
 
 ```js
-{ name, value, rank, changed }
+{ name, value, secondary, rank, changed }
 ```
 
-`changed: true` is set on rows whose value differs from the previous poll — those rows flash yellow.
+`value` is the primary sort/rank metric; `secondary` is the extra column displayed alongside it. `changed: true` is set on rows whose `value` differs from the previous poll — those rows flash yellow.
 
 ## Environment variables
 
@@ -56,19 +56,20 @@ https://docs.google.com/spreadsheets/d/<SHEET_ID>/export?format=csv&gid=<GID>
 
 Update `src/hooks/useReferrals.js` and `src/hooks/usePoints.js` if your sheet headers differ:
 
-| Table | Sheet column | Internal key |
-|---|---|---|
-| Referrals | `Team` | `name` |
-| Referrals | `Referrals` | `value` |
-| Points | `Team` | `name` |
-| Points | `Points` | `value` |
+| Table | Sheet columns | Sort key | Display order |
+|---|---|---|---|
+| Referrals | `Team`, `Referrals`, `Points` | `Referrals` | Rank · Team · Referrals · Points |
+| Points | `Team`, `Enrolls`, `Points` | `Points` | Rank · Team · Enrolls · Points |
+
+Each hook maps `Team` → `name`, the sort column → `value`, and the extra column → `secondary`.
 
 ## Features
 
 - **Dual leaderboard** — Referrals (silver) + Points (gold), side by side
+- **4-column tables** — Rank · Team · primary metric · secondary metric per table
 - **Independent feeds** — one error/loading state does not affect the other
 - **Rank badges** — gold / silver / bronze for top 3, with glow; #1 gets wing embellishment
-- **Flash animation** — yellow fade-out on any value change
+- **Flash animation** — yellow fade-out on any primary-metric change
 - **Pulsing live dot** — green pulse + "Updated Xs ago" counter
 - **Shimmer skeleton** — placeholder rows while awaiting first data
 - **Visibility-aware polling** — pauses when tab is hidden, resumes on focus

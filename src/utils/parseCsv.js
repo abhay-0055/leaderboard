@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 
-export async function fetchAndParse(url, nameCol, valueCol) {
+export async function fetchAndParse(url, nameCol, valueCol, secondaryCol = null) {
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`CSV fetch failed: ${res.status}`);
   const text = await res.text();
@@ -18,7 +18,11 @@ export async function fetchAndParse(url, nameCol, valueCol) {
   if (!data.length) throw new Error("CSV parse error: no rows returned");
 
   const mapped = data
-    .map((raw) => ({ name: raw[nameCol] ?? null, value: raw[valueCol] ?? null }))
+    .map((raw) => ({
+      name: raw[nameCol] ?? null,
+      value: raw[valueCol] ?? null,
+      ...(secondaryCol != null ? { secondary: raw[secondaryCol] ?? null } : {}),
+    }))
     .filter((r) => r.name != null);
 
   mapped.sort((a, b) => (b.value ?? 0) - (a.value ?? 0));

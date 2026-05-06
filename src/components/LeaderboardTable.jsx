@@ -8,11 +8,12 @@ function SkeletonRow({ theme }) {
       <td><span className="skeleton-cell rank-skel" /></td>
       <td><span className="skeleton-cell name-skel" /></td>
       <td><span className="skeleton-cell value-skel" /></td>
+      <td><span className="skeleton-cell value-skel" /></td>
     </tr>
   );
 }
 
-export default function LeaderboardTable({ title, columnLabel, rows, theme, error }) {
+export default function LeaderboardTable({ title, columns, rows, theme, error }) {
   const showSkeleton = rows.length === 0 && !error;
 
   return (
@@ -25,13 +26,15 @@ export default function LeaderboardTable({ title, columnLabel, rows, theme, erro
           <tr>
             <th className="th-rank">Rank</th>
             <th className="th-name">Team</th>
-            <th className={`th-value th-value--${theme}`}>{columnLabel}</th>
+            {columns.map((col) => (
+              <th key={col.field} className="th-value">{col.label}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {error ? (
             <tr>
-              <td colSpan={3} className="error-cell">⚠ {error}</td>
+              <td colSpan={2 + columns.length} className="error-cell">⚠ {error}</td>
             </tr>
           ) : showSkeleton ? (
             Array.from({ length: SKELETON_COUNT }, (_, i) => (
@@ -39,7 +42,7 @@ export default function LeaderboardTable({ title, columnLabel, rows, theme, erro
             ))
           ) : (
             rows.map((row) => (
-              <TeamRow key={row.name ?? row.rank} row={row} theme={theme} />
+              <TeamRow key={row.name ?? row.rank} row={row} theme={theme} columns={columns} />
             ))
           )}
         </tbody>

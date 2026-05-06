@@ -22,14 +22,20 @@ export default function Dashboard() {
         <div className="tables-row">
           <LeaderboardTable
             title="REFERRALS LEADERBOARD"
-            columnLabel="REFERRALS"
+            columns={[
+              { label: "REFERRALS", field: "value" },
+              { label: "POINTS", field: "secondary" },
+            ]}
             rows={referralRows}
             theme="silver"
             error={referralError}
           />
           <LeaderboardTable
             title="POINTS LEADERBOARD"
-            columnLabel="POINTS"
+            columns={[
+              { label: "ENROLLS", field: "secondary" },
+              { label: "POINTS", field: "value" },
+            ]}
             rows={pointRows}
             theme="gold"
             error={pointError}

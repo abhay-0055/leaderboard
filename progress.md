@@ -5,6 +5,11 @@
 ## Current Phase
 **All phases complete — ready to deploy**
 
+### Phase 7 — 4-Column Tables (Referrals + Enrolls)
+- **Status:** Complete
+- **Completed:** 2026-05-06
+- **Notes:** Both leaderboard tables expanded from 3 to 4 columns. Referrals sheet now exposes `Rank, Team, Referrals, Points`; Points sheet exposes `Rank, Team, Enrolls, Points`. `parseCsv.js` gains a `secondaryCol` param and includes a `secondary` field on each row. `useLeaderboard` threads `secondaryCol` through; `useReferrals` reads `Referrals` (sort key) + `Points` (secondary); `usePoints` reads `Points` (sort key) + `Enrolls` (secondary). `LeaderboardTable` now accepts a `columns` array (`[{label, field}]`) instead of a single `columnLabel`; renders headers and `colSpan` dynamically. `TeamRow` iterates `columns`: `field="value"` → theme-colored primary cell; `field="secondary"` → muted `.secondary-cell`. `Dashboard` configures column order per table — Referrals shows `[REFERRALS, POINTS]`, Points shows `[ENROLLS, POINTS]`. CSS adds `.secondary-cell` and `.secondary-cell--{theme}`; column widths tightened to keep layout balanced. `npm run build` clean.
+
 ---
 
 ## Phase Log
