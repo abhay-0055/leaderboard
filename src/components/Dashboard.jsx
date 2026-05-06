@@ -21,17 +21,17 @@ export default function Dashboard() {
         />
         <div className="tables-row">
           <LeaderboardTable
-            title="REFERRALS LEADERBOARD"
+            title="MAYONNAISE"
             columns={[
-              { label: "REFERRALS", field: "value" },
-              { label: "POINTS", field: "secondary" },
+              { label: "REFERRALS", field: "secondary" },
+              { label: "POINTS", field: "value" },
             ]}
             rows={referralRows}
             theme="silver"
             error={referralError}
           />
           <LeaderboardTable
-            title="POINTS LEADERBOARD"
+            title="HONEY"
             columns={[
               { label: "ENROLLS", field: "secondary" },
               { label: "POINTS", field: "value" },
