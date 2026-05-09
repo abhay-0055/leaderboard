@@ -4,7 +4,7 @@ A real-time registrations leaderboard displayed as a 3D bar chart, polling a pub
 
 ## Current state
 
-Fully functional. The bar chart renders 3D bars sorted ascending left to right, with team names below and scores above. Bars animate up on first load, flash on value change, show a shimmer skeleton while loading, and display a graceful message when the sheet has no rows.
+Fully functional. The bar chart renders 3D bars sorted ascending left to right, with team names below and scores above. All bar bases sit on the same horizontal line regardless of how many lines a team name wraps to. Bars animate up on first load, flash on value change, show a shimmer skeleton while loading, and display a graceful message when the sheet has no rows.
 
 ## Prerequisites
 

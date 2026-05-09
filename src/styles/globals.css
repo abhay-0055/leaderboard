@@ -257,6 +257,8 @@ body {
   max-width: 90px;
   line-height: 1.2;
   word-break: break-word;
+  height: 6rem;
+  overflow: visible;
 }
 
 /* ── Floor line ────────────────────────────────────────────── */

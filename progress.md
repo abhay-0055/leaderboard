@@ -22,3 +22,10 @@ Built the complete single-leaderboard bar chart dashboard from scratch on the `i
 - 3D effect is pure CSS using `clip-path` parallelograms for top and right side faces
 - Colors assigned by deterministic hash of team name for stability across re-renders
 - Empty sheet distinguished from loading via `lastUpdated` timestamp
+
+## Phase 2 — Bar alignment fix ✓
+
+Fixed bars floating at uneven heights when team names wrapped to different line counts.
+
+**Delivered:**
+- `src/styles/globals.css` — added `height: 6rem; overflow: visible` to `.bar-label` so every bar-item contributes a fixed height to the flex row, aligning all bar bases to the same horizontal regardless of label length
