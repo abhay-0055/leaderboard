@@ -1,6 +1,6 @@
 # Live Leaderboard Dashboard
 
-A real-time dual leaderboard dashboard — **Referrals** (left) and **Points** (right) — each polling its own publicly published Google Sheet CSV. Side-by-side layout, gaming/esports aesthetic. No backend, no auth, no cost.
+A real-time leaderboard dashboard polling its own publicly published Google Sheet CSV. Solid bar graph-inspired layout, gaming/esports aesthetic. No backend, no auth, no cost.
 
 ## Stack
 
@@ -24,46 +24,11 @@ A real-time dual leaderboard dashboard — **Referrals** (left) and **Points** (
 
 ## Project Structure (target)
 
-```
-leaderboard-dashboard/
-├── public/
-├── src/
-│   ├── hooks/
-│   │   ├── useLeaderboard.js      # generic hook (accepts csvUrl)
-│   │   ├── useReferrals.js        # calls useLeaderboard with VITE_REFERRALS_CSV_URL
-│   │   └── usePoints.js           # calls useLeaderboard with VITE_POINTS_CSV_URL
-│   ├── components/
-│   │   ├── Dashboard.jsx
-│   │   ├── Header.jsx
-│   │   ├── LeaderboardTable.jsx
-│   │   ├── TeamRow.jsx
-│   │   └── LiveIndicator.jsx
-│   ├── utils/
-│   │   └── parseCsv.js
-│   ├── styles/
-│   │   └── globals.css
-│   ├── App.jsx
-│   └── main.jsx
-├── docs/
-│   ├── data-layer.md
-│   ├── ui-spec.md
-│   └── deployment.md
-├── .env
-├── .env.example
-├── plan.md
-├── progress.md
-├── CLAUDE.md
-└── README.md
-```
+
 
 ## Commands
 
-```bash
-npm install       # install deps
-npm run dev       # dev server → localhost:5173
-npm run build     # production build → dist/
-npm run preview   # preview production build
-```
+
 
 ## Full Specs
 
@@ -71,4 +36,4 @@ npm run preview   # preview production build
 - **UI components, dual-table layout, themes, animations:** `@docs/ui-spec.md`
 - **Hosting, deployment checklist, known gotchas:** `@docs/deployment.md`
 
-**Visual reference:** `@docs/new-leaderboard.png` — target dashboard design (dual leaderboard, silver + gold themes)
+**Visual reference:** `@docs/bar-graph.png` — target dashboard design (3D named bars with score on top)
